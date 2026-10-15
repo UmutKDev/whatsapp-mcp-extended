@@ -75,6 +75,8 @@ services:
       - MCP_TRANSPORT=streamable-http
       - HOST=0.0.0.0
       - PORT=8081
+      # Obot'un Host başlığına izin verir (main.py yamasıyla birlikte çalışır).
+      - MCP_ALLOWED_HOSTS=whatsapp-mcp-extended:*
       - WHATSAPP_MCP_TOOLSETS=${WHATSAPP_MCP_TOOLSETS:-all}
       - BRIDGE_HOST=whatsapp-bridge
       - API_KEY=${API_KEY}
