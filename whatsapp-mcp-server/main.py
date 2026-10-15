@@ -809,17 +809,17 @@ def resource_sync_status() -> str:
     return json.dumps(data)
 
 
-   if __name__ == "__main__":
-       transport = os.getenv("MCP_TRANSPORT", "stdio")
-       if transport in {"sse", "streamable-http"}:
-           from mcp.server.transport_security import TransportSecuritySettings
+if __name__ == "__main__":
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
+    if transport in {"sse", "streamable-http"}:
+        from mcp.server.transport_security import TransportSecuritySettings
 
-           mcp.settings.host = os.getenv("HOST", "0.0.0.0")
-           mcp.settings.port = int(os.getenv("PORT", "8081"))
-           extra_hosts = [h.strip() for h in os.getenv("MCP_ALLOWED_HOSTS", "").split(",") if h.strip()]
-           mcp.settings.transport_security = TransportSecuritySettings(
-               enable_dns_rebinding_protection=True,
-               allowed_hosts=["127.0.0.1:*", "localhost:*", "[::1]:*", *extra_hosts],
-               allowed_origins=["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"],
-           )
-       mcp.run(transport=transport)
+        mcp.settings.host = os.getenv("HOST", "0.0.0.0")
+        mcp.settings.port = int(os.getenv("PORT", "8081"))
+        extra_hosts = [h.strip() for h in os.getenv("MCP_ALLOWED_HOSTS", "").split(",") if h.strip()]
+        mcp.settings.transport_security = TransportSecuritySettings(
+            enable_dns_rebinding_protection=True,
+            allowed_hosts=["127.0.0.1:*", "localhost:*", "[::1]:*", *extra_hosts],
+            allowed_origins=["http://127.0.0.1:*", "http://localhost:*", "http://[::1]:*"],
+        )
+    mcp.run(transport=transport)
