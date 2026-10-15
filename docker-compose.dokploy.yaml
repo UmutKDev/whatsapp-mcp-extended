@@ -112,6 +112,8 @@ services:
     restart: unless-stopped
     networks:
       - whatsapp_internal
+    labels:
+         - traefik.docker.network=dokploy-network
 
 volumes:
   wa_store:
