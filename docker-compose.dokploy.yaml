@@ -4,7 +4,8 @@
 # Orijinalden farklar:
 #  1. ./store yerine adlandırılmış volume (wa_store). Dokploy her dağıtımda repoyu
 #     yeniden klonladığı için ./store silinir ve WhatsApp oturumu kaybolurdu.
-#  2. Köprü ve MCP servisi için host portu yok. Başka projelerle port çakışmaz.
+#  2. MCP servisinin host portu yok. Köprü yalnızca 127.0.0.1:8180'e açık
+#     (web arayüzü köprüye tarayıcıdan bağlandığı için gerekli).
 #  3. MCP servisi ayrıca dokploy-network'e katılıyor, Obot buradan ulaşır.
 #     Köprü yalnızca whatsapp_internal ağında kalır.
 #  4. Web arayüzü yalnızca sunucunun 127.0.0.1:8090 adresine açık (SSH tüneliyle eşleştirme için).
@@ -25,6 +26,10 @@ services:
     dns:
       - 8.8.8.8
       - 8.8.4.4
+    ports:
+      # Web arayüzü köprüye tarayıcıdan doğrudan bağlanır, bu port gerekli.
+      # Yalnızca sunucunun kendisine açık, SSH tüneliyle erişin.
+      - "127.0.0.1:8180:8080"
     volumes:
       - wa_store:/app/whatsapp-bridge/store
     environment:
@@ -112,8 +117,6 @@ services:
     restart: unless-stopped
     networks:
       - whatsapp_internal
-    labels:
-         - traefik.docker.network=dokploy-network
 
 volumes:
   wa_store:
